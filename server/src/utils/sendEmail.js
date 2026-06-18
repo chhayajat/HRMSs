@@ -4,14 +4,14 @@ import { env } from '../config/env.js';
 let transporter = null;
 let transporterVerified = false;
 
-const getTransporter = async () => {
+const getTransporter = () => {
   if (transporter && transporterVerified) return transporter;
 
   transporter = null;
   transporterVerified = false;
 
   if (env.email.smtp.host && env.email.smtp.auth.user) {
-    const t = nodemailer.createTransport({
+    transporter = nodemailer.createTransport({
       host: env.email.smtp.host,
       port: env.email.smtp.port,
       secure: env.email.smtp.secure,
@@ -22,24 +22,15 @@ const getTransporter = async () => {
       tls: {
         rejectUnauthorized: false
       },
-      connectionTimeout: 10_000,
-      greetingTimeout: 10_000,
-      socketTimeout: 15_000
+      connectionTimeout: 15_000,
+      greetingTimeout: 15_000,
+      socketTimeout: 20_000
     });
-
-    try {
-      await t.verify();
-      console.log('SMTP transporter verified successfully');
-      transporter = t;
-      transporterVerified = true;
-    } catch (verifyErr) {
-      console.error('SMTP verification failed:', verifyErr.message);
-      try { t.close?.(); } catch (_) {}
-    }
+    transporterVerified = true;
   }
 
   if (!transporter) {
-    console.warn('Using console-log email fallback (no working SMTP)');
+    console.warn('Using console-log email fallback (no SMTP configured)');
     transporter = {
       sendMail: async (mailOptions) => {
         console.log('\n--- EMAIL (console fallback) ---');
@@ -65,7 +56,7 @@ export const sendEmail = async ({ to, subject, text, html }) => {
   }
 
   try {
-    const mailTransporter = await getTransporter();
+    const mailTransporter = getTransporter();
     const info = await mailTransporter.sendMail({
       from: env.email.from,
       to,

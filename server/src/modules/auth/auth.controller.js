@@ -459,12 +459,20 @@ export const registerSendOtp = async (req, res, next) => {
     });
 
     // Send email with OTP
-    await sendEmail({
+    const emailSent = await sendEmail({
       to: cleanEmail,
       subject: 'HRMS Organization Registration Verification Code',
       text: `Hello,\n\nUse the following 6-digit OTP verification code to complete your organization registration:\n\n${otp}\n\nThis code will expire in 10 minutes.`,
       html: `<h3>Hello,</h3><p>Use the following 6-digit OTP verification code to complete your organization registration:</p><h2 style="font-size: 24px; letter-spacing: 2px; color: #4F46E5;">${otp}</h2><p>This code will expire in 10 minutes.</p>`
     });
+
+    if (!emailSent) {
+      tempRegistrations.delete(cleanEmail);
+      return res.status(500).json({
+        success: false,
+        error: { code: 'EMAIL_SEND_FAILED', message: 'Failed to send verification email. Please check that SMTP is configured correctly and try again.' }
+      });
+    }
 
     res.status(200).json({
       success: true,
