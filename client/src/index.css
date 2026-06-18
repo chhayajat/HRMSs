@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --background: #F8FAFC;
+  --surface: #FFFFFF;
+  --sidebar: #090D1F;
+  --sidebar-text: #8F9CAE;
+  --primary: #4F46E5;
+  --primary-hover: #4338CA;
+  --accent: #0D9488;
+  --accent-hover: #0F766E;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --border-color: #E2E8F0;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #0B0F19;
+  --surface: #151B2C;
+  --sidebar: #0F172A;
+  --sidebar-text: #94A3B8;
+  --primary: #6366F1;
+  --primary-hover: #4F46E5;
+  --accent: #14B8A6;
+  --accent-hover: #0D9488;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --border-color: #1E293B;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-background text-textPrimary font-sans antialiased transition-colors duration-200;
+  }
+
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  textarea,
+  select {
+    @apply bg-background text-textPrimary;
+  }
+
+  .neon-input {
+    transition: box-shadow 240ms ease, transform 240ms ease;
+  }
+
+  .neon-input:hover {
+    box-shadow: 0 24px 46px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+  }
+
+  .neon-input input,
+  .neon-input textarea,
+  .neon-input select {
+    background-color: transparent !important;
+    color: #E8F4F8 !important;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+  }
+
+  .neon-input input::placeholder,
+  .neon-input textarea::placeholder {
+    color: rgba(255,255,255,0.45) !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus {
+    box-shadow: 0 0 0px 1000px rgba(20, 28, 48, 0.92) inset !important;
+    -webkit-text-fill-color: #E8F4F8 !important;
+    background-color: transparent !important;
+  }
+
+  select option {
+    background-color: var(--surface);
+    color: var(--text-primary);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 1;
+  }
+}
+
+/* Premium Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Utility Animations */
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* Glass effect utility */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, #4F46E5 0%, #0D9488 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Ripple Animation */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+.animate-ripple {
+  transform: scale(0);
+  animation: ripple 600ms linear;
+}
+
+/* Conic border glow path animation */
+@keyframes border-glow {
+  from {
+    stroke-dashoffset: 360;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.animate-border-glow {
+  animation: border-glow 5s linear infinite;
+}
+
+/* SVG Logo arc draw animation */
+@keyframes draw-logo {
+  0% {
+    stroke-dashoffset: 160;
+    fill-opacity: 0;
+  }
+  70% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0.15;
+  }
+}
+.animate-logo-draw {
+  animation: draw-logo 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes logo-text-fade {
+  to {
+    opacity: 1;
+  }
+}
+.animate-logo-text {
+  animation: logo-text-fade 0.8s ease-out 1.8s forwards;
+}
+
+/* Glitch aberration keyframes */
+@keyframes glitch-skew {
+  0%, 100% { transform: skew(0deg); }
+  20% { transform: skew(-1deg); }
+  40% { transform: skew(1.5deg); }
+  60% { transform: skew(-0.5deg); }
+  80% { transform: skew(1deg); }
+}
+.animate-glitch {
+  animation: glitch-skew 1s step-end infinite;
+}
+
+/* Laser scan animation */
+@keyframes laser-scan {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.animate-laser-scan {
+  animation: laser-scan 4s linear infinite;
+}
+
+/* Liquid Metal movement */
+@keyframes liquid-metal {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.animate-liquid-metal {
+  background-size: 200% 200%;
+  animation: liquid-metal 3s ease infinite;
+}
+
